@@ -1,12 +1,12 @@
-import { Router } from "express"
+// import { Router } from "express"
 
-import { ClasificationsControllers } from '../infraestructure/clasifications.controllers';
+// import { ClasificationsControllers } from '../infraestructure/clasifications.controllers';
 
-const router = Router()
+// const router = Router()
 
-router
-  .get('/', ClasificationsControllers.getAllClasifications)
-  .post('/', ClasificationsControllers.saveClasification)
-  .delete('/:id', ClasificationsControllers.deleteClasification)
+// router
+//   .get('/', ClasificationsControllers.getAllClasifications)
+//   .post('/', ClasificationsControllers.saveClasification)
+//   .delete('/:id', ClasificationsControllers.deleteClasification)
 
-export const ClasificationsRouter = router
+// export const ClasificationsRouter = router

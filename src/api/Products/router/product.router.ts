@@ -1,17 +1,17 @@
-import { Router } from "express"
+// import { Router } from "express"
 
-import { ProductsControllers } from '../infraestructure/product.controllers';
+// import { ProductsControllers } from '../infraestructure/product.controllers';
 
-const router = Router()
+// const router = Router()
 
-router
+// router
 
-  .get('/', ProductsControllers.getAllProducts)
-  .get('/:id', ProductsControllers.getProductsById)
+//   .get('/', ProductsControllers.getAllProducts)
+//   .get('/:id', ProductsControllers.getProductsById)
 
-  .post('/', ProductsControllers.saveProduct)
-  // .put('/:wokerId', ProductsControllers.updateUsers)
+//   .post('/', ProductsControllers.saveProduct)
+//   // .put('/:wokerId', ProductsControllers.updateUsers)
 
-  .delete('/:id', ProductsControllers.deleteProduct)
+//   .delete('/:id', ProductsControllers.deleteProduct)
 
-export const ProductsRouter = router
+// export const ProductsRouter = router

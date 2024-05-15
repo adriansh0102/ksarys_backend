@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 
 import { api } from '../routes/index.routes';
-import { dbConnection } from '../database/config';
+import { getConnection } from '../database/config';
 
 export class ExpressServer {
   
@@ -12,16 +12,16 @@ export class ExpressServer {
   constructor() {
     this.app = express()
 
-    // Conectar la base de datos
-    this.conectDB()
-
     // Middlewares
     this.middlewares()
 
     this.routes()
   }
 
-  listen() {    
+  listen() {
+
+    getConnection()
+    
     this.app.listen(
       process.env.PORT, () => {
         console.clear();
@@ -29,8 +29,6 @@ export class ExpressServer {
       }
     )
   }
-
-  conectDB() { dbConnection() }
 
   middlewares () {
     this.app.use(cors())

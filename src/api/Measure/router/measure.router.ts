@@ -1,12 +1,12 @@
-import { Router } from "express"
+// import { Router } from "express"
 
-import { MeasureControllers } from "../infraestructure/measure.controllers"
+// import { MeasureControllers } from "../infraestructure/measure.controllers"
 
-const router = Router()
+// const router = Router()
 
-router
-  .get('/', MeasureControllers.getAllMeasure)
-  .post('/', MeasureControllers.saveMeasure)
-  .delete('/:id', MeasureControllers.deleteConcept)
+// router
+//   .get('/', MeasureControllers.getAllMeasure)
+//   .post('/', MeasureControllers.saveMeasure)
+//   .delete('/:id', MeasureControllers.deleteConcept)
 
-export const MeasuresRouter = router
+// export const MeasuresRouter = router

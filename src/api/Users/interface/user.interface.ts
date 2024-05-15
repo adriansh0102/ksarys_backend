@@ -1,8 +1,9 @@
 export interface User {
-  _id?:         string;
-  enable?:      boolean;
-  name?:        string;
-  password?:    string;
-  role?:        string;
-  email?:       string;
+  ID: string;
+  Nombre: string;
+  ClaveAcceso: string;
+  Cargo: string;
+  NivelAcceso: string;
+  Correo: string;
+  Activo: string;
 }
