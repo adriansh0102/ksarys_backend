@@ -79,20 +79,17 @@ export class UsersControllers {
       const { username, password } = req.body;
       const user: User = await (await UsersManager('SelectByName', { Nombre: username })).at(0)
 
-      console.log(user);
-
       if (!user) {
         return sendRes(res, 200, false, 'Ese usuario no está registrado en nuestro sistema', '');
       }
-      
-      const compare = bcrypt.compareSync(password, user!.ClaveAcceso!);
+
+      const compare = bcrypt.compareSync(password, user!.ClaveAcceso!.trim());
       if (!compare) return sendRes(
         res,
         200,
         false,
         'Contraseña incorrecta', '');
 
-    
       const token = jwt.sign(
         {
           username: user.Nombre,
