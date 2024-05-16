@@ -3,7 +3,7 @@ import { IResult } from 'mssql';
 import { User } from '../interface/user.interface';
 import { getConnection } from '../../../database/config';
 
-export async function GestionUsuarios(action: string, Datos?: User) {
+export async function UsersManager(action: string, Datos?: User) {
   
   const pool = await getConnection();
   if (!pool) {
@@ -19,10 +19,17 @@ export async function GestionUsuarios(action: string, Datos?: User) {
           result = await pool.request()
               .query(query);
           break;
-      case 'SelectUnUsuario':
+      case 'SelectById':
           query = 'SELECT * FROM Usuarios WHERE Id = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
+              .input('Activo', Datos!.Activo)
+              .query(query);
+          break;
+      case 'SelectByName':
+          query = 'SELECT * FROM Usuarios WHERE Nombre = @Nombre';
+          result = await pool.request()
+              .input('Nombre', Datos!.Nombre)
               .input('Activo', Datos!.Activo)
               .query(query);
           break;
@@ -34,7 +41,7 @@ export async function GestionUsuarios(action: string, Datos?: User) {
                           BEGIN
                               SET @Id = ISNULL((SELECT MAX(Id) + 1 FROM Usuarios), (SELECT TOP 1 IdServer FROM ServerID))
                               INSERT INTO Usuarios (Id, Nombre, ClaveAcceso, Cargo, NivelAcceso, Correo, Activo, IdUsuario)
-                              VALUES (@Id, @Nombre, @ClaveAcceso, @Cargo, @NivelAcceso, @Correo, @Activo, @IdUsuario)
+                              VALUES (@Id, @Nombre, @ClaveAcceso, @Cargo, @NivelAcceso, @Correo, @Activo, @Id)
                           END
                   COMMIT TRAN`;
           result = await pool.request()
@@ -43,7 +50,7 @@ export async function GestionUsuarios(action: string, Datos?: User) {
               .input('ClaveAcceso', Datos!.ClaveAcceso)
               .input('Cargo', Datos!.Cargo)
               .input('NivelAcceso', Datos!.NivelAcceso)
-              .input('Activo', Datos!.Activo)
+              .input('Activo', 1)
               .query(query);
           break;
       case 'Import':
@@ -81,26 +88,26 @@ export async function GestionUsuarios(action: string, Datos?: User) {
               .input('Correo', Datos!.Correo)
               .query(query);
           break;
-      case 'Borrar':
+      case 'Erease':
           query = 'UPDATE Usuarios SET Activo = 0 WHERE Id = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .query(query);
           break;
-      case 'Eliminar':
-          query = 'DELETE FROM Usuarios WHERE Id = @Id AND Activo = 0';
+      case 'Delete':
+          query = 'DELETE FROM Usuarios WHERE Id = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .query(query);
           break;
-      case 'CambiarClave':
+      case 'ChangePassword':
           query = 'UPDATE Usuarios SET ClaveAcceso = @ClaveAcceso WHERE Id = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .input('ClaveAcceso', Datos!.ClaveAcceso)
               .query(query);
           break;
-      case 'AsignarRol':
+      case 'SetRole':
           query = 'UPDATE Usuarios SET NivelAcceso = @NivelAcceso, Activo = 1 WHERE Id = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
