@@ -5,12 +5,16 @@ import jwt from 'jsonwebtoken';
 import { sendRes } from '../../../helpers/send.res';
 import { User } from '../interface/user.interface';
 import { GestionUsuarios } from './querys';
+import { Utensilio } from '../../utensilios/utensilios/interface/utensilios.interface';
 
 export class UsersControllers {
 
   static async getAllUsers (req: Request, res: Response) {
 
     try {
+
+   
+
       const users = await GestionUsuarios('Select')
       return sendRes(res, 200, true, 'Datos Obtenidos', users);
     } catch (error) { 

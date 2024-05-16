@@ -4,4 +4,10 @@ export const COLLECTIONS = {
   CLASIFICATION: 'clasifications',
   MEASURE: 'measures',
   PRODUCTS: 'products',
+
+
+  UTENSILIOS: {
+    utencilios:'utensilios',
+    utenciliosTipos: 'utensilios/utensiliosTipos'
+  },
 }
