@@ -1,17 +1,15 @@
-import e, { Response, Request } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { Response, Request } from 'express';
 
 import { sendRes } from '../../../helpers/send.res';
 import { Entity } from '../interface/entity.interface';
-import { GestionUsuarios } from './entity-querys';
+import { EntitiesManager } from './entity-querys';
 
 export class EntityControllers {
 
   static async getAllEntities (req: Request, res: Response) {
 
     try {
-      const entity = await GestionUsuarios('Select')
+      const entity = await EntitiesManager('Select')
       return sendRes(res, 200, true, 'Datos Obtenidos', entity);
     } catch (error) { 
       if (error instanceof Error) {
@@ -33,7 +31,7 @@ export class EntityControllers {
         false,
         'Faltan datos para realizar esta acción', ''); 
     
-      const user = await GestionUsuarios('SelectById', {ID: clientId});
+      const user = await EntitiesManager('SelectById', {Id: Number.parseInt(clientId)});
       if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
       
       return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
@@ -53,14 +51,13 @@ export class EntityControllers {
     try {
 
       const data: Entity = req.body;
-      const fetchedEntity: Entity = await (await GestionUsuarios('SelectByName', { Nombre: data.Nombre })).at(0)
+      const fetchedEntity: Entity = (await EntitiesManager('SelectByName', { Nombre: data.Nombre }))[0]
 
       if (fetchedEntity) {
-        await GestionUsuarios('Update', data);
-        return sendRes(res, 200, true, 'Usuario Editado Correctamente', '');
+        return sendRes(res, 200, false, 'Ya existe una entidad con ese nombre', '');
       }
 
-      await GestionUsuarios('Insert', data);
+      await EntitiesManager('Insert', data);
       return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
       
     } catch (error) {
@@ -78,7 +75,7 @@ export class EntityControllers {
       
       console.log(id);
     
-      await GestionUsuarios('Delete', {ID: id});
+      await EntitiesManager('Delete', {Id: Number.parseInt(id)});
       return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
 
     } catch (error) { 
