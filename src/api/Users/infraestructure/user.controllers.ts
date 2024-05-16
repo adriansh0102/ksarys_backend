@@ -1,21 +1,17 @@
-import { Response, Request } from 'express';
+import e, { Response, Request } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 import { sendRes } from '../../../helpers/send.res';
 import { User } from '../interface/user.interface';
-import { GestionUsuarios } from './querys';
-import { Utensilio } from '../../utensilios/utensilios/interface/utensilios.interface';
+import { UsersManager } from './users-querys';
 
 export class UsersControllers {
 
   static async getAllUsers (req: Request, res: Response) {
 
     try {
-
-   
-
-      const users = await GestionUsuarios('Select')
+      const users = await UsersManager('Select')
       return sendRes(res, 200, true, 'Datos Obtenidos', users);
     } catch (error) { 
       if (error instanceof Error) {
@@ -27,130 +23,132 @@ export class UsersControllers {
 
   }
 
-  // static async getUsersById (req: Request, res: Response) {
+  static async getUsersById (req: Request, res: Response) {
 
-  //   try {
+    try {
 
-  //     const { clientId } = req.params;
-  //     if (!clientId) return sendRes(res,
-  //       500,
-  //       false,
-  //       'Error Grave', ''); 
+      const { clientId } = req.params;
+      if (!clientId) return sendRes(res,
+        200,
+        false,
+        'Faltan datos para realizar esta acción', ''); 
     
-  //     const user = await UserModel.findById(clientId);
-  //     if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
+      const user = await UsersManager('SelectById', {ID: clientId});
+      if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
       
-  //     return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
+      return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
       
-  //   } catch (error) { 
-  //     if (error instanceof Error) {
-  //       return sendRes(res, 500, false, 'mess_0', error.message); 
-  //     } else {
-  //       return sendRes(res, 500, false, 'mess_0', '');
-  //     }
-  //   }
+    } catch (error) { 
+      if (error instanceof Error) {
+        return sendRes(res, 500, false, 'mess_0', error.message); 
+      } else {
+        return sendRes(res, 500, false, 'mess_0', '');
+      }
+    }
 
-  // }
+  }
 
-  // static async saveUser(req: Request, res: Response) {
+  static async saveUser(req: Request, res: Response) {
   
-  //   try {
+    try {
 
-  //     const data: User = req.body;
-  //     const exist = await UserModel.findOne({ email: data.email })
+      const data: User = req.body;
+      const fetchedUser: User = await (await UsersManager('SelectByName', { Nombre: data.Nombre })).at(0)
 
-  //     if (exist) {
-  //       return sendRes(res, 401, false, 'Ya existe ese correo en nuestro sistema', '');
-  //     }
+      if (fetchedUser) {
+        await UsersManager('Update', data);
+        return sendRes(res, 200, true, 'Usuario Editado Correctamente', '');
+      }
 
-  //     const hashPassword = bcrypt.hashSync(data.password!, 10);
-  //     data.password = hashPassword;
+      const hashPassword = bcrypt.hashSync(data.ClaveAcceso!, 10);
+      data.ClaveAcceso = hashPassword;
 
-  //     const user = new UserModel(data);
-  //     await user.save();
-  //     return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
+      await UsersManager('Insert', data);
+      return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
       
-  //   } catch (error) {
-  //     return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
-  //   }
+    } catch (error) {
+      return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
+    }
 
-  // }
+  }
   
-  // static async sign(req: Request, res: Response) {
+  static async sign(req: Request, res: Response) {
 
-  //   try {
+    try {
 
-  //     const { email, password } = req.body;
-  //     const exist: User | null = await UserModel.findOne({ email })
+      const { username, password } = req.body;
+      const user: User = await (await UsersManager('SelectByName', { Nombre: username })).at(0)
 
-  //     if (!exist) {
-  //       return sendRes(res, 401, false, 'Ese correo no está registrado en nuestro sistema', '');
-  //     }
+      console.log(user);
+
+      if (!user) {
+        return sendRes(res, 200, false, 'Ese usuario no está registrado en nuestro sistema', '');
+      }
       
-  //     const compare = bcrypt.compareSync(password, exist.password!);
-  //     if (!compare) return sendRes(
-  //       res,
-  //       401,
-  //       false,
-  //       'Contraseña incorrecta', '');
+      const compare = bcrypt.compareSync(password, user!.ClaveAcceso!);
+      if (!compare) return sendRes(
+        res,
+        200,
+        false,
+        'Contraseña incorrecta', '');
 
     
-  //     const token = jwt.sign(
-  //       {
-  //         username: exist.name,
-  //         user_id: exist._id,
-  //         enable: exist.enable
-  //       },
-  //       process.env.JWT_KEY_APP!,
-  //       { expiresIn: '1d' }
-  //     )
+      const token = jwt.sign(
+        {
+          username: user.Nombre,
+          user_id: user.ID,
+          enable: user.Activo
+        },
+        process.env.JWT_KEY_APP!,
+        { expiresIn: '1d' }
+      )
     
-  //     return sendRes(res, 200, true, 'Inicio de sesión correcto', {
-  //       user: {
-  //         userID: exist._id,
-  //         role: exist.role!.toLocaleLowerCase()
-  //       },
-  //       token,
-  //     });
+      return sendRes(res, 200, true, 'Inicio de sesión correcto', {
+        user: {
+          userID: user.ID,
+          role: user.Cargo!.toLocaleLowerCase()
+        },
+        token,
+      });
       
-  //   } catch (error) { return sendRes(res, 500, false, 'mess_0', ''); }
+    } catch (error) { return sendRes(res, 500, false, 'mess_0', ''); }
 
-  // }
+  }
 
-  // static async deleteUser (req: Request, res: Response) {
+  static async deleteUser (req: Request, res: Response) {
 
-  //   try {
+    try {
       
-  //     const { id } = req.params;
-  //     if( !id ) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
+      const { id } = req.params;
+      if (!id) return sendRes(res, 200, false, 'Faltan datos para realizar esta acción', ''); 
+      
+      console.log(id);
     
-  //     await UserModel.deleteOne({ _id: id })
-  //     return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
+      await UsersManager('Delete', {ID: id});
+      return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
 
-  //   } catch (error) { 
-  //     if (error instanceof Error) {
-  //       return sendRes(res, 500, false, 'Error Interno', error.message); 
-  //     } else {
-  //       return sendRes(res, 500, false, 'Error Interno', '');
-  //     }
-  //   }
+    } catch (error) { 
+      if (error instanceof Error) {
+        console.log(error);
+        return sendRes(res, 500, false, 'Error Interno', error.message); 
+      } else {
+        return sendRes(res, 500, false, 'Error Interno', '');
+      }
+    }
 
-  // }
+  }
 
-  // static async changeActive(req: Request, res: Response) {
-  //   try {
+  static async changeActive(req: Request, res: Response) {
+    try {
 
-  //     const data: User = req.body
+      const data: User = req.body
 
-  //     await UserModel.findOneAndUpdate({ _id: data._id }, {
-  //       $set: {enable: data.enable}
-  //     })
+      await UsersManager('Erease', data);
+      return sendRes(res, 200, true, 'Usuario Editado', '');
 
-  //     return sendRes(res, 200, true, 'Usuario Editado', '');
-
-  //   } catch (error) {
-  //     return sendRes(res, 500, false, 'Error Interno', '');
-  //   }
-  // }
+    } catch (error) {
+      return sendRes(res, 500, false, 'Error Interno', '');
+    }
+  }
 
 }
