@@ -1,25 +1,20 @@
 import { Router } from "express"
 
 import { UsersControllers } from '../infraestructure/user.controllers';
+import { checkAuth } from "../../../helpers/checkAuth";
 
 const router = Router()
 
 router
 
-  .get('/', UsersControllers.getAllUsers)
-  .get('/:clientId', UsersControllers.getUsersById)
-  // .get('/profile/:reg_med', UsersControllers.getDoctorByRegMed)
-  // .get('/:clinicId', UsersControllers.getAllUsersOfAClinic)
-  // .get('/byoccupation/:occupation', UsersControllers.getByOccupationUsers)
+  .get('/', checkAuth, UsersControllers.getAllUsers)
+  .get('/:clientId', checkAuth, UsersControllers.getUsersById)
 
-  .post('/', UsersControllers.saveUser)
+  .post('/', checkAuth, UsersControllers.saveUser)
   .post('/signIn', UsersControllers.sign)
-  // .post('/changePassword', UsersControllers.changePassword)
-  .post('/changeActive', UsersControllers.changeActive)
-  // .post('/sendMail', UsersControllers.sendMailToRecoveryPass)
+  // .post('/changePassword', checkAuth, UsersControllers.changePassword)
+  .post('/changeActive', checkAuth, UsersControllers.changeActive)
 
-  // .put('/:wokerId', UsersControllers.updateUsers)
-
-  .delete('/:id', UsersControllers.deleteUser)
+  .delete('/:id', checkAuth, UsersControllers.deleteUser)
 
 export const UsersRouter = router

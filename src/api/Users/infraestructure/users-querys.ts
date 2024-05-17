@@ -20,7 +20,7 @@ export async function UsersManager(action: string, Datos?: User) {
               .query(query);
           break;
       case 'SelectById':
-          query = 'SELECT * FROM Usuarios WHERE Id = @Id';
+          query = 'SELECT * FROM Usuarios WHERE CAST(Id AS VARCHAR(MAX)) = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .input('Activo', Datos!.Activo)
@@ -53,34 +53,8 @@ export async function UsersManager(action: string, Datos?: User) {
               .input('Activo', 1)
               .query(query);
           break;
-      case 'Import':
-          query = `DECLARE @IdDb int
-                  BEGIN TRAN
-                      SET @IdDb = (SELECT COUNT(Id) FROM Usuarios WHERE Id = @Id)
-                      IF @IdDb = 0
-                          BEGIN
-                              INSERT INTO Usuarios (Id, Nombre, ClaveAcceso, Cargo, NivelAcceso, Correo, Activo)
-                              VALUES (@Id, @Nombre, @ClaveAcceso, @Cargo, @NivelAcceso, @Correo, @Activo)
-                          END
-                      ELSE
-                          BEGIN
-                              UPDATE Usuarios
-                              SET Nombre = @Nombre, ClaveAcceso = @ClaveAcceso, NivelAcceso = @NivelAcceso, Cargo = @Cargo, Correo = @Correo, Activo = @Activo
-                              WHERE Id = @Id
-                          END
-                  COMMIT TRAN`;
-          result = await pool.request()
-              .input('Id', Datos!.ID)
-              .input('Nombre', Datos!.Nombre)
-              .input('ClaveAcceso', Datos!.ClaveAcceso)
-              .input('Cargo', Datos!.Cargo)
-              .input('NivelAcceso', Datos!.NivelAcceso)
-              .input('Correo', Datos!.Correo)
-              .input('Activo', Datos!.Activo)
-              .query(query);
-          break;
       case 'Update':
-          query = 'UPDATE Usuarios SET Nombre = @Nombre, Cargo = @Cargo, Correo = @Correo, Activo = 1 WHERE Id = @Id';
+          query = 'UPDATE Usuarios SET Nombre = @Nombre, Cargo = @Cargo, Correo = @Correo, Activo = 1 WHERE CAST(Id AS VARCHAR(MAX)) = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .input('Nombre', Datos!.Nombre)
@@ -89,26 +63,26 @@ export async function UsersManager(action: string, Datos?: User) {
               .query(query);
           break;
       case 'Erease':
-          query = 'UPDATE Usuarios SET Activo = 0 WHERE Id = @Id';
+          query = 'UPDATE Usuarios SET Activo = 0 WHERE CAST(Id AS VARCHAR(MAX)) = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .query(query);
           break;
       case 'Delete':
-          query = 'DELETE FROM Usuarios WHERE Id = @Id';
+          query = 'DELETE FROM Usuarios WHERE CAST(Id AS VARCHAR(MAX)) = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .query(query);
           break;
       case 'ChangePassword':
-          query = 'UPDATE Usuarios SET ClaveAcceso = @ClaveAcceso WHERE Id = @Id';
+          query = 'UPDATE Usuarios SET ClaveAcceso = @ClaveAcceso WHERE CAST(Id AS VARCHAR(MAX)) = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .input('ClaveAcceso', Datos!.ClaveAcceso)
               .query(query);
           break;
       case 'SetRole':
-          query = 'UPDATE Usuarios SET NivelAcceso = @NivelAcceso, Activo = 1 WHERE Id = @Id';
+          query = 'UPDATE Usuarios SET NivelAcceso = @NivelAcceso, Activo = 1 WHERE CAST(Id AS VARCHAR(MAX)) = @Id';
           result = await pool.request()
               .input('Id', Datos!.ID)
               .input('NivelAcceso', Datos!.NivelAcceso)

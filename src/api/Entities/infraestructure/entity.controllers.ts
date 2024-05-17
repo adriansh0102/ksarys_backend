@@ -25,14 +25,14 @@ export class EntityControllers {
 
     try {
 
-      const { clientId } = req.params;
-      if (!clientId) return sendRes(res,
+      const { id } = req.params;
+      if (!id) return sendRes(res,
         200,
         false,
         'Faltan datos para realizar esta acción', ''); 
     
-      const user = await EntitiesManager('SelectById', {Id: Number.parseInt(clientId)});
-      if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
+      const user = await EntitiesManager('SelectById', {Id: id});
+      if (!user) return sendRes(res, 500, false, 'Entidad no encontrada', ''); 
       
       return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
       
@@ -58,9 +58,28 @@ export class EntityControllers {
       }
 
       await EntitiesManager('Insert', data);
-      return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
+      return sendRes(res, 200, true, 'Entidad Creada Exitosamente', '');
       
     } catch (error) {
+      console.log(error);
+      return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
+    }
+
+  }
+
+  static async editEntity(req: Request, res: Response) {
+  
+    try {
+
+      const data: Entity = req.body;
+
+      console.log(data);
+
+      await EntitiesManager('Update', data);
+      return sendRes(res, 200, true, 'Entidad Editada Exitosamente', '');
+      
+    } catch (error) {
+      console.log(error);
       return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
     }
 
@@ -72,16 +91,13 @@ export class EntityControllers {
       
       const { id } = req.params;
       if (!id) return sendRes(res, 200, false, 'Faltan datos para realizar esta acción', ''); 
-      
-      console.log(id);
-    
-      await EntitiesManager('Delete', {Id: Number.parseInt(id)});
-      return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
 
+      await EntitiesManager('Delete', { Id: id });
+      return sendRes(res, 200, true, 'Entidad Eliminada Correctamente', '');
     } catch (error) { 
       if (error instanceof Error) {
-        console.log(error);
-        return sendRes(res, 500, false, 'Error Interno', error.message); 
+        console.log(error.message);
+        return sendRes(res, 500, false, 'Error Interno', ''); 
       } else {
         return sendRes(res, 500, false, 'Error Interno', '');
       }

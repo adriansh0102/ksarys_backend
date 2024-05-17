@@ -1,9 +1,10 @@
 export interface Entity {
-  Id?: number;
+  Id?: string;
   Codigo?: string;
   Nombre?: string;
   IdDpa?: number;
   Direccion?: string;
+  Municipio?: string;
   Director?: string;
   Actividad?: string;
   Cuenta?: string;
