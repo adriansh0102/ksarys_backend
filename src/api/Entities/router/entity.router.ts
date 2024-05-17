@@ -1,17 +1,20 @@
 import { Router } from "express"
 
 import { EntityControllers } from '../infraestructure/entity.controllers';
+import { checkAuth } from "../../../helpers/checkAuth";
 
 const router = Router()
 
 router
 
-  .get('/', EntityControllers.getAllEntities)
+  .get('/', checkAuth, EntityControllers.getAllEntities)
 
-  .get('/:clientId', EntityControllers.getEntitiesById)
+  .get('/:id', checkAuth, EntityControllers.getEntitiesById)
 
-  .post('/', EntityControllers.saveEntity)
+  .post('/', checkAuth, EntityControllers.saveEntity)
 
-  .delete('/:id', EntityControllers.deleteEntity)
+  .put('/', checkAuth, EntityControllers.editEntity)
+
+  .delete('/:id', checkAuth, EntityControllers.deleteEntity)
 
 export const EntitiesRouter = router

@@ -4,4 +4,6 @@ export const COLLECTIONS = {
   CLASIFICATION: 'clasifications',
   MEASURE: 'measures',
   PRODUCTS: 'products',
+  ENTITY: 'entity',
+  DPA: 'dpa',
 }
