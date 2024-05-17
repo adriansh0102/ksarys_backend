@@ -5,6 +5,7 @@ import { UtensiliosTiposControllers } from "../../utensiliosTipo/infraestructure
 const router = Router()
 
 router
-  .get('/',UtensiliosTiposControllers.getAllUtensiliosTipos);
+  .get('/',UtensiliosTiposControllers.getAllUtensiliosTipos)
+  .post('/' , UtensiliosTiposControllers.SaveAllUtensiliosTipos)
 
-export const utensiliosTipo = router;
+export const utensiliosTipoRouter = router;

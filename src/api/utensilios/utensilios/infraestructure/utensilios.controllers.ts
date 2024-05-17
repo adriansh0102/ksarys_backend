@@ -28,7 +28,7 @@ export class UtensiliosControllers {
     const { 
       IdEntidad = '2500000000',
       IdTipo='2500000001' , 
-      Nombre='',
+      Nombre='perdwwwwwwwwwwododod',
       Cantidad=0,
       Precio=2222,
       Activo = true,
@@ -39,10 +39,8 @@ export class UtensiliosControllers {
     const data:Utensilio = {IdEntidad, IdTipo, Nombre,Cantidad, Precio,Activo, Validado, IdUsuario};
 
     try {
-    
       const result = await Utensilios("Insert" , data );
       return sendRes(res, 200, true, "Insertado Correctamente" , result );
-
     } catch (error) {
       if (error instanceof Error) {
         return sendRes(res, 500, false, "Error BD", error.message);

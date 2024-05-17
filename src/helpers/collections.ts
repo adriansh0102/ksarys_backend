@@ -1,7 +1,5 @@
 export const COLLECTIONS = {
   USERS: 'users',
-  CONCEPTS: 'concepts',
-  CLASIFICATION: 'clasifications',
   MEASURE: 'measures',
   PRODUCTS: 'products',
 
@@ -10,4 +8,10 @@ export const COLLECTIONS = {
     utencilios:'utensilios',
     utenciliosTipos: 'utensilios/utensiliosTipos'
   },
+
+  CONCEPTOCLASIFICACIONALMACEN : {
+    conceptos: 'conClasifAlmacen/conceptos',
+    clasificacion : 'conClasifAlmacen/clasificacion',
+    almacen: 'conClasifAlmacen/almacen'
+  }
 }

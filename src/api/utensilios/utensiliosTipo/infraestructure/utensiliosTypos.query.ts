@@ -20,6 +20,23 @@ export async function UtensiliosTipos(action: string, Datos?: UtensiliosTipos) {
       .input("Activo", true)
       .query(query);
       break;
+
+    case 'Insert':
+      query = `Declare @Id bigint
+                  BEGIN TRAN
+                      Set @Id = (Select Count(Id) From UtensiliosTipos Where Nombre = @Nombre)
+                      If @Id = 0 Begin
+                      Set @Id = IsNull((Select Max(Id)+1 From UtensiliosTipos),(Select Top 1 IdServer From ServerID))
+                          Insert Into UtensiliosTipos(Id, Nombre, Activo, IdUsuario)
+                        Values(@Id, @Nombre, @Activo, @IdUsuario)
+                      End
+                  COMMIT TRAN`;
+      result = await pool
+      .request()
+      .input('Nombre' , Datos!.Nombre)
+      .input('Activo' , Datos!.Activo)
+      .input('IdUsuario' , Datos!.IdUsuario)
+      .query(query)
       
   }
   await pool.close();
