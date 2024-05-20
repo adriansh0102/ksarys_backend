@@ -6,4 +6,5 @@ export const COLLECTIONS = {
   PRODUCTS: 'products',
   ENTITY: 'entity',
   DPA: 'dpa',
+  DEPEND: 'dependents',
 }

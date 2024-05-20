@@ -6,6 +6,7 @@ import { COLLECTIONS } from "../helpers/collections";
 import { UsersRouter } from "../api/Users/router/user.router";
 import { EntitiesRouter } from '../api/Entities/router/entity.router';
 import { DPARouter } from '../api/DPA/router/dpa.router';
+import { DependentsRouter } from '../api/Dependents/router/dependents.router';
 // import { ConceptsRouter } from '../api/Concepts/router/concepts.router';
 // import { ClasificationsRouter } from '../api/Clasifications/router/clasifications.router';
 // import { MeasuresRouter } from '../api/Measure/router/measure.router';
@@ -14,6 +15,7 @@ import { DPARouter } from '../api/DPA/router/dpa.router';
 api.use(`/${COLLECTIONS.USERS}`, UsersRouter)
 api.use(`/${COLLECTIONS.ENTITY}`, EntitiesRouter)
 api.use(`/${COLLECTIONS.DPA}`, DPARouter)
+api.use(`/${COLLECTIONS.DEPEND}`, DependentsRouter)
 // api.use(`/${COLLECTIONS.CONCEPTS}`, ConceptsRouter)
 // api.use(`/${COLLECTIONS.CLASIFICATION}`, ClasificationsRouter)
 // api.use(`/${COLLECTIONS.MEASURE}`, MeasuresRouter)
