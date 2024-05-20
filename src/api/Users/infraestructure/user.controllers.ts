@@ -34,9 +34,9 @@ export class UsersControllers {
         'Faltan datos para realizar esta acción', ''); 
     
       const user = await UsersManager('SelectById', {ID: clientId});
-      if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
+      if (!user) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
       
-      return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
+      return sendRes(res, 200, true, 'Resultado de la búsqueda', user); 
       
     } catch (error) { 
       if (error instanceof Error) {
