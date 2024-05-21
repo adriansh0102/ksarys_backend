@@ -7,4 +7,5 @@ export const COLLECTIONS = {
   ENTITY: 'entity',
   DPA: 'dpa',
   DEPEND: 'dependents',
+  SALES: 'sales',
 }
