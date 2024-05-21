@@ -6,6 +6,7 @@ export const COLLECTIONS = {
   ENTITY: 'entity',
   DPA: 'dpa',
   DEPEND: 'dependents',
+<<<<<<< HEAD
 
   UTENSILIOS: {
     utencilios:'utensilios',
@@ -28,4 +29,7 @@ export const COLLECTIONS = {
     productPrice: 'product/price',
   },
 
+=======
+  SALES: 'sales',
+>>>>>>> 716e88ff7a867af942160bca2a7eea80d4a41c91
 }
