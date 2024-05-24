@@ -8,11 +8,10 @@ export class ClasificacionControllers {
   
   static async getClasificacion(req: Request, res: Response) {
     try {
-      const { Activo = true, Validado } = req.body;
+      const { Activo = true, Validado=true } = req.body;
 
       const result = await ClasificacionManager("Select", {Activo, Validado});
 
-      console.log(result);
       return sendRes(res, 200, true, "GET Ok", result);
       
     } catch (error) {

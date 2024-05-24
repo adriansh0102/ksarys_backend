@@ -7,8 +7,19 @@ import { sendRes } from "../../../../helpers/send.res";
 export class AlmacenControllers {
 
     static async getAllAlmacen(req: Request, res: Response) {
+
+   
+
+      const {   Activo, IdEntidad, IdAreaEntidad,  Validado } = req.query;
+
+      const data ={
+        Activo: true,
+        IdEntidad,
+        IdAreaEntidad,
+        Validado: 1
+      }
         try {
-            const result = await AlmacenesManager('SelectAll')
+            const result = await AlmacenesManager('Select', data)
             return sendRes(res, 200, true, "Peticion Get Ok" , result );
     
         } catch (error) {
