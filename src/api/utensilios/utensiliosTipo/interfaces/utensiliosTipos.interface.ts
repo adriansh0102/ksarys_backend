@@ -1,8 +1,8 @@
 
 
 export interface UtensiliosTipos {
-    Id: string;
-    Nombre: string;
-    Activo: boolean;
-    IdUsuario: string;
+    Id?: string;
+    Nombre?: string;
+    Activo?: boolean;
+    IdUsuario?: string;
 }

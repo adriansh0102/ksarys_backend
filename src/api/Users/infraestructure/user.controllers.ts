@@ -1,4 +1,4 @@
-import e, { Response, Request } from 'express';
+import { Response, Request } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -34,9 +34,9 @@ export class UsersControllers {
         'Faltan datos para realizar esta acción', ''); 
     
       const user = await UsersManager('SelectById', {ID: clientId});
-      if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
+      if (!user) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
       
-      return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
+      return sendRes(res, 200, true, 'Resultado de la búsqueda', user); 
       
     } catch (error) { 
       if (error instanceof Error) {
@@ -79,20 +79,17 @@ export class UsersControllers {
       const { username, password } = req.body;
       const user: User = await (await UsersManager('SelectByName', { Nombre: username })).at(0)
 
-      console.log(user);
-
       if (!user) {
         return sendRes(res, 200, false, 'Ese usuario no está registrado en nuestro sistema', '');
       }
-      
-      const compare = bcrypt.compareSync(password, user!.ClaveAcceso!);
+
+      const compare = bcrypt.compareSync(password, user!.ClaveAcceso!.trim());
       if (!compare) return sendRes(
         res,
         200,
         false,
         'Contraseña incorrecta', '');
 
-    
       const token = jwt.sign(
         {
           username: user.Nombre,

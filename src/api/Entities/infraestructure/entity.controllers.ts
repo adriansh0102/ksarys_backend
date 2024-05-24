@@ -1,17 +1,15 @@
-import e, { Response, Request } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { Response, Request } from 'express';
 
 import { sendRes } from '../../../helpers/send.res';
 import { Entity } from '../interface/entity.interface';
-import { GestionUsuarios } from './entity-querys';
+import { EntitiesManager } from './entity-querys';
 
 export class EntityControllers {
 
   static async getAllEntities (req: Request, res: Response) {
 
     try {
-      const entity = await GestionUsuarios('Select')
+      const entity = await EntitiesManager('Select')
       return sendRes(res, 200, true, 'Datos Obtenidos', entity);
     } catch (error) { 
       if (error instanceof Error) {
@@ -27,14 +25,14 @@ export class EntityControllers {
 
     try {
 
-      const { clientId } = req.params;
-      if (!clientId) return sendRes(res,
+      const { id } = req.params;
+      if (!id) return sendRes(res,
         200,
         false,
         'Faltan datos para realizar esta acción', ''); 
     
-      const user = await GestionUsuarios('SelectById', {ID: clientId});
-      if (!user) return sendRes(res, 500, false, 'Usuario no encontrado', ''); 
+      const user = await EntitiesManager('SelectById', {Id: id});
+      if (!user) return sendRes(res, 500, false, 'Entidad no encontrada', ''); 
       
       return sendRes(res, 500, false, 'Resultado de la búsqueda', user); 
       
@@ -53,17 +51,35 @@ export class EntityControllers {
     try {
 
       const data: Entity = req.body;
-      const fetchedEntity: Entity = await (await GestionUsuarios('SelectByName', { Nombre: data.Nombre })).at(0)
+      const fetchedEntity: Entity = (await EntitiesManager('SelectByName', { Nombre: data.Nombre }))[0]
 
       if (fetchedEntity) {
-        await GestionUsuarios('Update', data);
-        return sendRes(res, 200, true, 'Usuario Editado Correctamente', '');
+        return sendRes(res, 200, false, 'Ya existe una entidad con ese nombre', '');
       }
 
-      await GestionUsuarios('Insert', data);
-      return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
+      await EntitiesManager('Insert', data);
+      return sendRes(res, 200, true, 'Entidad Creada Exitosamente', '');
       
     } catch (error) {
+      console.log(error);
+      return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
+    }
+
+  }
+
+  static async editEntity(req: Request, res: Response) {
+  
+    try {
+
+      const data: Entity = req.body;
+
+      console.log(data);
+
+      await EntitiesManager('Update', data);
+      return sendRes(res, 200, true, 'Entidad Editada Exitosamente', '');
+      
+    } catch (error) {
+      console.log(error);
       return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
     }
 
@@ -75,16 +91,13 @@ export class EntityControllers {
       
       const { id } = req.params;
       if (!id) return sendRes(res, 200, false, 'Faltan datos para realizar esta acción', ''); 
-      
-      console.log(id);
-    
-      await GestionUsuarios('Delete', {ID: id});
-      return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
 
+      await EntitiesManager('Delete', { Id: id });
+      return sendRes(res, 200, true, 'Entidad Eliminada Correctamente', '');
     } catch (error) { 
       if (error instanceof Error) {
-        console.log(error);
-        return sendRes(res, 500, false, 'Error Interno', error.message); 
+        console.log(error.message);
+        return sendRes(res, 500, false, 'Error Interno', ''); 
       } else {
         return sendRes(res, 500, false, 'Error Interno', '');
       }

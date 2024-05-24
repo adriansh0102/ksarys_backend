@@ -1,4 +1,5 @@
-import sql from 'mssql';
+import sql, { ConnectionPool } from 'mssql';
+
 
 const dbSettings: sql.config = {
 
@@ -13,10 +14,12 @@ const dbSettings: sql.config = {
 
 }
 
-export async function getConnection() {
+export async function getConnection(): Promise<ConnectionPool> {
   try {
-    const pool = await sql.connect(dbSettings)
-    return pool
-  
-  } catch (error) { console.log(error); }
+    const pool = await sql.connect(dbSettings);
+    return pool;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error connecting to the database');
+  }
 }
