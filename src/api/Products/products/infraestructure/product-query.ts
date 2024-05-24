@@ -1,8 +1,6 @@
 import { ConnectionPool } from "mssql";
 import { getConnection } from "../../../../database/config";
 
-
-
 export async function Products(action: string, Datos?: any) {
     const pool: ConnectionPool = await getConnection();
 
