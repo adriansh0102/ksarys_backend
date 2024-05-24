@@ -1,3 +1,4 @@
+
 export interface Utensilio {
   Id?: string;
   IdEntidad?: string;
@@ -9,3 +10,4 @@ export interface Utensilio {
   Validado?: number;
   IdUsuario?: string;
 }
+
