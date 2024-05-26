@@ -19,10 +19,8 @@ import { ProductsRouter } from '../api/Products/products/router/product.router';
 
 import { SalesRouter } from '../api/Sales/router/sales.router';
 
-// import { ConceptsRouter } from '../api/Concepts/router/concepts.router';
-// import { ClasificationsRouter } from '../api/Clasifications/router/clasifications.router';
-// import { MeasuresRouter } from '../api/Measure/router/measure.router';
-// import { ProductsRouter } from '../api/Products/router/product.router';
+import { MeasuresRouter } from '../api/measure/router/measure.router';
+
 
 api.use(`/${COLLECTIONS.USERS}`, UsersRouter)
 
@@ -51,5 +49,5 @@ api.use(`/${COLLECTIONS.PRODUCTS}`, ProductsRouter)
 
 // api.use(`/${COLLECTIONS.CONCEPTS}`, ConceptsRouter)
 // api.use(`/${COLLECTIONS.CLASIFICATION}`, ClasificationsRouter)
-// api.use(`/${COLLECTIONS.MEASURE}`, MeasuresRouter)
+api.use(`/${COLLECTIONS.MEASURE}`, MeasuresRouter)
 // api.use(`/${COLLECTIONS.PRODUCTS}`, ProductsRouter)
