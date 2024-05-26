@@ -1,7 +1,6 @@
 import { ConnectionPool } from "mssql";
 import { getConnection } from "../../../../database/config";
 
-
 export async function Products(action: string, Datos?: any) {
     const pool: ConnectionPool = await getConnection();
 
@@ -27,7 +26,44 @@ export async function Products(action: string, Datos?: any) {
                 .input("Validado", Datos.Validado)
                 .query(query);
             break;
+        case "SelectSelect":
+            query = `Select * from ProductosClasificacion;
+            Select * from ProductosConceptos;
+            Select * from Almacenes;
+            Select * from UnidadesMedida;`;
+            result = await pool.request().query(query);
+            break;
 
+        case "SelectTable":
+            query = `SELECT 
+                p.Id, 
+                p.Codigo, 
+                p.Nombre, 
+                p.IdUm, 
+                p.IdClasificacion, 
+                p.IdConcepto, 
+                p.IdEntidad, 
+                p.IdAlmacen, 
+                p.FactorConversion,             
+                COALESCE(c.Nombre, '0') AS Clasificacion,
+                COALESCE(a.Nombre, '0') AS Almacen,
+                COALESCE(m.Nombre, '0') AS Medida,
+                COALESCE(pre.Precio, 0) AS Precio,
+                COALESCE(pc.Nombre ,'0') AS Concepto
+            FROM 
+                Productos p
+            LEFT JOIN 
+                ProductosClasificacion c ON p.IdClasificacion = c.Id
+            LEFT JOIN
+                Almacenes a ON p.IdAlmacen = a.Id
+            LEFT JOIN
+                UnidadesMedida m ON p.IdUm = m.Id
+            LEFT JOIN
+                ProductosPrecios pre ON p.Id = pre.IdProducto
+            LEFT JOIN
+                ProductosConceptos pc ON p.IdConcepto = pc.Id where p.Activo = 1`;
+            result = await pool.request().query(query);
+            break;
         case "SelectOneName":
             query = "Select Id, Codigo, Nombre, IdUm, IdClasificacion, IdConcepto, IdEntidad, IdAlmacen, IsNull((Select Top 1 Precio From ProductosPrecios Where IdProducto = Pr.Id Order by Fecha Desc),0) as Precio, IsNull((Select Top 1 Fecha From ProductosPrecios Where IdProducto = Pr.Id Order by Fecha Desc),GetDate()) as FechaApertura, IsNull((Select Sum(Cantidad) From ProductosFacturaDetalles Where IdProducto = Pr.Id),0) as InventarioInicial, Activo, Validado, IsNull((Select Nombre From ProductosClasificacion Where Id = IdClasificacion),'') as Clasificacion, FactorConversion From Productos Pr Where IdEntidad = @IdEntidad And Nombre = @Nombre";
             result = await pool.request()
@@ -131,6 +167,10 @@ export async function Products(action: string, Datos?: any) {
                 .input("Validado", Datos.Validado)
                 .input("Cantidad", Datos.InventarioInicial)
                 .input("Importe", Datos.Importe)
+                .input("FactorConversion", Datos.FactorConversion)
+                .input("IdAreaEntidad", Datos.IdAreaEntidad)
+                .input("Precio", Datos.Precio)
+
                 .query(query);
             break;
 
@@ -138,7 +178,6 @@ export async function Products(action: string, Datos?: any) {
             query = `UPDATE Productos SET Activo = 0, Validado = @Validado WHERE Id = @Id`;
             result = await pool.request()
                 .input("Id", Datos.Id)
-                .input("IdFacturaProveedor", Datos.IdFacturaProveedor)
                 .input("Validado", Datos.Validado)
                 .query(query);
             break;
@@ -158,7 +197,6 @@ export async function Products(action: string, Datos?: any) {
         throw new Error("Null");
     }
 
-    return result.recordset;
-
+    return (action !== 'SelectSelect') ? result.recordset : result.recordsets;
 
 }
