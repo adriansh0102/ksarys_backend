@@ -2,15 +2,20 @@ export const COLLECTIONS = {
   USERS: 'users',
   CONCEPTS: 'concepts',
   CLASIFICATION: 'clasifications',
-  MEASURE: 'measures',
+
+  PRODUCTS: 'products',
+
+
   ENTITY: 'entity',
   DPA: 'dpa',
   DEPEND: 'dependents',
+
 
   UTENSILIOS: {
     utencilios:'utensilios',
     utenciliosTipos: 'utensilios/utensiliosTipos'
   },
+
 
   CONCEPTOCLASIFICACIONALMACEN : {
     conceptos: 'conClasifAlmacen/conceptos',
@@ -30,5 +35,6 @@ export const COLLECTIONS = {
 
   SALES: 'sales',
 
-  MEANSURE: 'meansure',
+
+  MEANSURE: 'meansure'
 }

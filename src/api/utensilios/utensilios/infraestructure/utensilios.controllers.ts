@@ -1,9 +1,9 @@
 import { Response, Request } from "express";
 
 import { sendRes } from "../../../../helpers/send.res";
-import { Utensilios} from "./utensilios-query";
-import { Utensilio } from "../interface/utensilios.interface";
-
+import { Utensilios} from "./query";
+import { Utensilio } from "../interface/utensilios.interfa {
+ 
 export class UtensiliosControllers {
   
   static async getAllUtensilios(req: Request, res: Response) {
