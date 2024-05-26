@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 
 import { sendRes } from "../../../../helpers/send.res";
 import { Utensilios} from "./query";
-import { Utensilio } from "../interface/utensilios.interfa {
+import { Utensilio } from "../interface/utensilios.interface";
  
 export class UtensiliosControllers {
   
@@ -62,13 +62,6 @@ export class UtensiliosControllers {
         );
       }
     }
-
-
-
-
-
-
-
 
   }
 
