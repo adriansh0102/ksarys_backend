@@ -1,6 +1,7 @@
-import { Response, Request } from "express";
-import { sendRes } from "../../../../helpers/send.res";
-import { UtensiliosTipos } from "./utensiliosTypos-query";
+
+import { Response, Request } from 'express';
+import { sendRes } from '../../../../helpers/send.res';
+import { UtensiliosTipos } from './utensiliosTypos.query';
 
 export class UtensiliosTiposControllers {
 
@@ -77,3 +78,4 @@ export class UtensiliosTiposControllers {
   }
 
 }
+

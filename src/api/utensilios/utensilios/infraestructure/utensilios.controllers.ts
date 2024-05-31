@@ -1,9 +1,9 @@
 import { Response, Request } from "express";
 
 import { sendRes } from "../../../../helpers/send.res";
-import { Utensilios} from "./utensilios-query";
+import { Utensilios} from "./query";
 import { Utensilio } from "../interface/utensilios.interface";
-
+ 
 export class UtensiliosControllers {
   
   static async getAllUtensilios(req: Request, res: Response) {
@@ -62,13 +62,6 @@ export class UtensiliosControllers {
         );
       }
     }
-
-
-
-
-
-
-
 
   }
 

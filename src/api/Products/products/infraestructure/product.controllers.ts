@@ -28,10 +28,14 @@ export class ProductsControllers {
     }
   }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   static async getAllProductsTable(req: Request, res: CustomResponse) {
 
+=======
+  static async getAllProductsTable(req: Request, res: Response) {
+>>>>>>> 8b307761b98f6bcb82375d7f9bfa008f95d6cc72
 
     try {
       const products = await Products("SelectTable");
@@ -57,7 +61,10 @@ export class ProductsControllers {
       }
     }
   }
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 8b307761b98f6bcb82375d7f9bfa008f95d6cc72
 
   //no se que hace esta consulta
   static async getProductsById(req: Request, res: Response) {
@@ -93,14 +100,15 @@ export class ProductsControllers {
       FactorConversion 
     } = req.body;
 
+
     const product  = {
       Codigo,
       Nombre,
       IdUm,
       IdClasificacion,
-      IdEntidad,
       IdAlmacen,
       InventarioInicial2,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
       Activo: false,
       Validado: 0,
@@ -111,6 +119,12 @@ export class ProductsControllers {
       IdUsuario: res.userData?.id,
       IdEntidad :res.entity,
 >>>>>>> Stashed changes
+=======
+      Activo: true,
+      Validado: 1,
+      IdUsuario: '2500000000',
+      IdEntidad :'2500000000',
+>>>>>>> 8b307761b98f6bcb82375d7f9bfa008f95d6cc72
       IdConcepto,
       FactorConversion,
     }
@@ -127,8 +141,73 @@ export class ProductsControllers {
     }
   }
 
+  static async updateProduct(req: Request, res: Response) {
+
+    let { Id } = req.params;
+
+    const id = Number.parseInt(Id);
+
+    const {
+      IdFacturaProveedor,
+      Codigo,
+      Nombre,
+      IdUm,
+      IdClasificacion,
+      IdConcepto,
+      IdAlmacen,
+      Cantidad,
+      Importe,
+      FactorConversion,
+    } = req.body;
+
+    const data ={
+      Id:id,
+      IdFacturaProveedor,
+      Codigo,
+      Nombre,
+      IdUm,
+      IdClasificacion,
+      IdConcepto,
+      IdAlmacen,
+      Activo: true,
+      Validado: 1,
+      Cantidad,
+      Importe,
+      FactorConversion,
+      
+
+    }
+
+
+    try {
+      const product = await Products("Update", data );
+      return sendRes(res, 200, true, "Productos Actualizado", product);
+    } catch (error) {
+      if (error instanceof Error) {
+        return sendRes(res, 500, false, "Error Grave", error.message);
+      } else {
+        return sendRes(res, 500, false, "Error Grave", "");
+      }
+    }
+  }
+
   static async deleteProduct(req: Request, res: Response) {
 
+    let { Validado } = req.body;
+    const { Id } = req.params;
+
+    if( !Validado ) Validado = 1 
+
+    try {
+      const product = await Products("Borrar", { Id ,Activo: false , Validado});
+      return sendRes(res, 200, true, "Productos Borrado", product);
+    } catch (error) {
+      if (error instanceof Error) {
+        return sendRes(res, 500, false, "Error Grave", error.message);
+      } else {
+        return sendRes(res, 500, false, "Error Grave", "");
+      }
+    }
   }
 
   
