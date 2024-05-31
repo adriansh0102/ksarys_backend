@@ -21,6 +21,21 @@ export class EntityControllers {
 
   }
 
+  static async getAllEntitiesArea (req: Request, res: Response) {
+
+    try {
+      const entity = await EntitiesManager('SelectAreaEntidad')
+      return sendRes(res, 200, true, 'Datos Obtenidos', entity);
+    } catch (error) { 
+      if (error instanceof Error) {
+        return sendRes(res, 500, false, 'Error Grave', error.message); 
+      } else {
+        return sendRes(res, 500, false, 'Error Grave', '');
+      }
+    }
+
+  }
+
   static async getEntitiesById (req: Request, res: Response) {
 
     try {

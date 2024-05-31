@@ -1,12 +1,13 @@
 import { Sale } from '../interface/sales.interface';
 import { getConnection } from '../../../database/config';
 
-export async function SalesManager(action: string, data?: Sale) {
+export async function SalesManager(action: string, data?: any) {
   
   const pool = await getConnection();
   if (!pool) {
     throw new Error('Failed to establish a database connection.');
   }
+
 
   let query: string;
   const result: Sale[] = [];
@@ -56,33 +57,33 @@ export async function SalesManager(action: string, data?: Sale) {
       }
       break;
 
-    case 'Insert':
-      query = `
-        DECLARE @Id bigint;
-        BEGIN TRAN
-          SET @Id = (SELECT COUNT(Id) FROM Comanda WHERE Numero = @Numero);
-          IF @Id = 0 BEGIN
-            SET @Id = ISNULL((SELECT MAX(Id) + 1 FROM Comanda), (SELECT TOP 1 IdServer FROM ServerID));
-            INSERT INTO Comanda(Id, Numero, IdAreaEntidad, Fecha, Mesa, Personas, IdDependiente, Observaciones, Descuento, Activo, Validado, Cerrado, IdUsuario)
-            VALUES(@Id, @Numero, @IdAreaEntidad, @Fecha, @Mesa, @Personas, @IdDependiente, @Observaciones, @Descuento, @Activo, @Validado, @Cerrado, @IdUsuario);
-          END
-        COMMIT TRAN;
-      `;
-      await pool.request()
-        .input('Numero', data!.Numero)
-        .input('IdAreaEntidad', data!.IdAreaEntidad)
-        .input('Fecha', data!.Fecha)
-        .input('Mesa', data!.Mesa)
-        .input('Personas', data!.Personas)
-        .input('IdDependiente', data!.IdDependiente)
-        .input('Observaciones', data!.Observaciones)
-        .input('Descuento', data!.Descuento)
-        .input('Activo', 1)
-        .input('Validado', 1)
-        .input('Cerrado', data!.Cerrado)
-        .input('IdUsuario', data!.IdUsuario)
-        .query(query);
-      break;
+      case 'Insert':
+        query = `
+          DECLARE @Id bigint;
+          BEGIN TRAN
+            SET @Id = (SELECT COUNT(Id) FROM Comanda WHERE Numero = @Numero);
+            IF @Id = 0 BEGIN
+              SET @Id = ISNULL((SELECT MAX(Id) + 1 FROM Comanda), (SELECT TOP 1 IdServer FROM ServerID));
+              INSERT INTO Comanda(Id, Numero, IdAreaEntidad, Fecha, Mesa, Personas, IdDependiente, Observaciones, Descuento, Activo, Validado, Cerrado, IdUsuario)
+              VALUES(@Id, @Numero, @IdAreaEntidad, @Fecha, @Mesa, @Personas, @IdDependiente, @Observaciones, @Descuento, @Activo, @Validado, @Cerrado, @IdUsuario);
+            END
+          COMMIT TRAN;
+        `;
+        await pool.request()
+          .input('Numero', data!.Numero)
+          .input('IdAreaEntidad', data!.IdAreaEntidad)
+          .input('Fecha', data!.Fecha)
+          .input('Mesa', data!.Mesa)
+          .input('Personas', data!.Personas)
+          .input('IdDependiente', data!.IdDependiente)
+          .input('Observaciones', data!.Observaciones)
+          .input('Descuento', data!.Descuento)
+          .input('Activo', 1)
+          .input('Validado', 1)
+          .input('Cerrado', data!.Cerrado)
+          .input('IdUsuario', data!.IdUsuario)
+          .query(query);
+        break;
 
     case 'Update':
       query = `

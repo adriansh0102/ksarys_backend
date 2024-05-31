@@ -73,10 +73,11 @@ export class UsersControllers {
   }
   
   static async sign(req: Request, res: Response) {
-
+    
+    
     try {
-
-      const { username, password } = req.body;
+      
+      const { username, password , entity } = req.body;
       const user: User = await (await UsersManager('SelectByName', { Nombre: username })).at(0)
 
       if (!user) {
@@ -94,7 +95,8 @@ export class UsersControllers {
         {
           username: user.Nombre,
           user_id: user.ID,
-          enable: user.Activo
+          enable: user.Activo,
+          entity
         },
         process.env.JWT_KEY_APP!,
         { expiresIn: '1d' }
@@ -106,6 +108,7 @@ export class UsersControllers {
           role: user.Cargo!.toLocaleLowerCase()
         },
         token,
+        entity
       });
       
     } catch (error) { return sendRes(res, 500, false, 'mess_0', ''); }

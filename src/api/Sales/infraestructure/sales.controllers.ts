@@ -49,13 +49,31 @@ export class SalesControllers {
   }
 
   static async saveSale(req: Request, res: Response) {
-  
+   
     try {
 
-      const data: Sale = req.body;
+      let { IdAreaEntidad, Fecha, Mesa,  Personas,  IdDependiente, Observaciones, Descuento , Producto}  = req.body;
+      
+      console.log( IdAreaEntidad, Fecha, Mesa,  Personas,  IdDependiente, Descuento , Producto);
+      
+      const sale: Sale = {
+        Numero: 6754667,
+        IdAreaEntidad,
+        Fecha,
+        Mesa,
+        Personas,
+        IdDependiente,
+        Observaciones,
+        Descuento,
+        Activo: true,
+        Validado: true,
+        Cerrado: false,
+        IdUsuario: res.userData?.id,
+        Id: ''
+      }
 
-      await SalesManager('Insert', data);
-      return sendRes(res, 200, true, 'Usuario Creado Exitosamente', '');
+      await SalesManager('Insert', sale);
+      return sendRes(res, 200, true, 'Comanda Creado Exitosamente', '');
       
     } catch (error) {
       return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);

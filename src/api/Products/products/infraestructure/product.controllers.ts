@@ -5,6 +5,7 @@ import { Product } from '../interface/product.interface';
 import { ProductsRouter } from '../router/product.router';
 import { Products } from './product-query';
 import { CLIENT_RENEG_LIMIT } from 'tls';
+import { CustomResponse } from '../../../../helpers/checkAuth';
 
 
 export class ProductsControllers {
@@ -27,6 +28,36 @@ export class ProductsControllers {
     }
   }
 
+<<<<<<< Updated upstream
+=======
+  static async getAllProductsTable(req: Request, res: CustomResponse) {
+
+
+    try {
+      const products = await Products("SelectTable");
+      return sendRes(res, 200, true, "Productos Obtenidos", products);
+    } catch (error) {
+      if (error instanceof Error) {
+        return sendRes(res, 500, false, "Error Grave", error.message);
+      } else {
+        return sendRes(res, 500, false, "Error Grave", "");
+      }
+    }
+  }
+  static async getProductsSelect(req: Request, res: Response) {
+
+    try {
+      const products = await Products("SelectSelect");
+      return sendRes(res, 200, true, "Productos Select Obtenidos", products);
+    } catch (error) {
+      if (error instanceof Error) {
+        return sendRes(res, 500, false, "Error Grave", error.message);
+      } else {
+        return sendRes(res, 500, false, "Error Grave", "");
+      }
+    }
+  }
+>>>>>>> Stashed changes
 
   //no se que hace esta consulta
   static async getProductsById(req: Request, res: Response) {
@@ -48,7 +79,8 @@ export class ProductsControllers {
     }
   }
 
-  static async saveProduct(req: Request, res: Response) {
+  static async saveProduct(req: Request, res: CustomResponse) {
+
     let { 
       Codigo ,
       Nombre ,
@@ -69,9 +101,16 @@ export class ProductsControllers {
       IdEntidad,
       IdAlmacen,
       InventarioInicial2,
+<<<<<<< Updated upstream
       Activo: false,
       Validado: 0,
       IdUsuario: '',
+=======
+      Activo: true,
+      Validado: 1,
+      IdUsuario: res.userData?.id,
+      IdEntidad :res.entity,
+>>>>>>> Stashed changes
       IdConcepto,
       FactorConversion,
     }
@@ -92,4 +131,5 @@ export class ProductsControllers {
 
   }
 
+  
 }

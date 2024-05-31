@@ -7,7 +7,10 @@ const router = Router()
 
 router
 
-  .get('/', checkAuth, EntityControllers.getAllEntities)
+  .get('/',EntityControllers.getAllEntities)
+
+  .get('/area',EntityControllers.getAllEntitiesArea)
+
 
   .get('/:id', checkAuth, EntityControllers.getEntitiesById)
 

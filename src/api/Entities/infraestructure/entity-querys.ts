@@ -11,8 +11,17 @@ export async function EntitiesManager(Accion: string, Datos?: Entity): Promise<E
 
   const lst: Entity[] = [];
   let query: string;
+  let result: any = null;
+
   
   switch (Accion) {
+
+    case 'SelectAreaEntidad':
+      query = `Select * from EntidadAreas where activo = 1`;
+      result = await pool.request().query(query);
+
+    break;
+
     case "Select":
       query = `select e.*, dpa.Nombre as Municipio from Entidad e, Dpa dpa where dpa.Id = e.IdDpa;`;
       const resultSelect = await pool.request()
@@ -121,6 +130,8 @@ export async function EntitiesManager(Accion: string, Datos?: Entity): Promise<E
   }
 
   await pool.close();
+  
+  if( Accion == 'SelectAreaEntidad') return result.recordset;
 
   return lst;
 }
