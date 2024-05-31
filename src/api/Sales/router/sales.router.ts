@@ -10,7 +10,7 @@ router
   .get('/', checkAuth, SalesControllers.getAllSales)
   .get('/:id', checkAuth, SalesControllers.getSalesById)
 
-  .post('/pepe', checkAuth, SalesControllers.saveSale)
+  .post('/', checkAuth, SalesControllers.saveSale)
 
   .delete('/:id', checkAuth, SalesControllers.deleteSale)
 

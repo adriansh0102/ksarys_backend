@@ -54,16 +54,14 @@ export class SalesControllers {
 
       let { IdAreaEntidad, Fecha, Mesa,  Personas,  IdDependiente, Observaciones, Descuento , Producto}  = req.body;
       
-      console.log( IdAreaEntidad, Fecha, Mesa,  Personas,  IdDependiente, Descuento , Producto);
-      
       const sale: Sale = {
-        Numero: 6754667,
+        Numero: 6754668,
         IdAreaEntidad,
         Fecha,
         Mesa,
         Personas,
         IdDependiente,
-        Observaciones,
+        Observaciones: 'prueba cosa gorda',
         Descuento,
         Activo: true,
         Validado: true,

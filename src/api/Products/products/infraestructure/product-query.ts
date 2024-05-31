@@ -143,7 +143,7 @@ export async function Products(action: string, Datos?: any) {
         case "Update":
             query = `UPDATE Productos 
           SET Codigo = @Codigo, Nombre = @Nombre, IdUm = @IdUm, IdClasificacion = @IdClasificacion, IdConcepto = @IdConcepto, IdAlmacen = @IdAlmacen, Activo = 1, Validado = @Validado, FactorConversion = @FactorConversion 
-          WHERE Id = @Id; 
+          WHERE CAST(Id AS VARCHAR(MAX)) = @Id; 
           UPDATE ProductosPrecios SET Precio = @Precio WHERE IdProducto = @Id; 
           DECLARE @IdTmp bigint 
           If @IdFacturaProveedor > 0 Begin 
