@@ -9,8 +9,14 @@ export class EntityControllers {
   static async getAllEntities (req: Request, res: Response) {
 
     try {
-      const entity = await EntitiesManager('Select')
-      return sendRes(res, 200, true, 'Datos Obtenidos', entity);
+      const entities = await EntitiesManager('Select')
+
+      for (const entity of entities) { 
+        const areaEntidad = await EntitiesManager('SelectAreaEntidad', { Id: entity.Id });
+        entity.AreaEntidades = areaEntidad;
+      }
+
+      return sendRes(res, 200, true, 'Datos Obtenidos', entities);
     } catch (error) { 
       if (error instanceof Error) {
         return sendRes(res, 500, false, 'Error Grave', error.message); 
@@ -24,7 +30,8 @@ export class EntityControllers {
   static async getAllEntitiesArea (req: Request, res: Response) {
 
     try {
-      const entity = await EntitiesManager('SelectAreaEntidad')
+      const { entity_id } = req.params;
+      const entity = await EntitiesManager('SelectAreaEntidad', { Id: entity_id });
       return sendRes(res, 200, true, 'Datos Obtenidos', entity);
     } catch (error) { 
       if (error instanceof Error) {

@@ -12,4 +12,5 @@ export interface Entity {
   Activo?: boolean;
   Validado?: boolean;
   IdUsuario?: number;
+  AreaEntidades?: Entity[];
 }

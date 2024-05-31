@@ -9,7 +9,7 @@ router
 
   .get('/',EntityControllers.getAllEntities)
 
-  .get('/area',EntityControllers.getAllEntitiesArea)
+  .get('/area/:entity_id',EntityControllers.getAllEntitiesArea)
 
 
   .get('/:id', checkAuth, EntityControllers.getEntitiesById)

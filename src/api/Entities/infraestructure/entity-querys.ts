@@ -12,13 +12,14 @@ export async function EntitiesManager(Accion: string, Datos?: Entity): Promise<E
   const lst: Entity[] = [];
   let query: string;
   let result: any = null;
-
   
   switch (Accion) {
 
     case 'SelectAreaEntidad':
-      query = `Select * from EntidadAreas where activo = 1`;
-      result = await pool.request().query(query);
+      query = `Select * from EntidadAreas where CAST(IdEntidad AS VARCHAR(MAX)) = @Id and activo = 1`;
+      result = await pool.request()
+        .input('Id', Datos!.Id)
+        .query(query);
 
     break;
 
@@ -131,7 +132,9 @@ export async function EntitiesManager(Accion: string, Datos?: Entity): Promise<E
 
   await pool.close();
   
-  if( Accion == 'SelectAreaEntidad') return result.recordset;
+  if (Accion == 'SelectAreaEntidad') {
+    return result.recordset
+  }
 
   return lst;
 }

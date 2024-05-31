@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { sendRes } from '../../../helpers/send.res';
 import { Sale } from '../interface/sales.interface';
 import { SalesManager } from './sales-querys';
+import { CustomResponse } from '../../../helpers/checkAuth';
 
 export class SalesControllers {
 
@@ -48,15 +49,15 @@ export class SalesControllers {
 
   }
 
-  static async saveSale(req: Request, res: Response) {
+  static async saveSale(req: Request, res: CustomResponse) {
    
     try {
 
-      let { IdAreaEntidad, Fecha, Mesa,  Personas,  IdDependiente, Observaciones, Descuento , Producto}  = req.body;
+      let { Fecha, Mesa,  Personas,  IdDependiente, Descuento }  = req.body;
       
       const sale: Sale = {
-        Numero: 6754668,
-        IdAreaEntidad,
+        Numero: 6754669,
+        IdAreaEntidad: res.area,
         Fecha,
         Mesa,
         Personas,
@@ -70,10 +71,13 @@ export class SalesControllers {
         Id: ''
       }
 
+      console.log(sale);
+
       await SalesManager('Insert', sale);
       return sendRes(res, 200, true, 'Comanda Creado Exitosamente', '');
       
     } catch (error) {
+      console.log(error);
       return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
     }
 
