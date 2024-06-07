@@ -1,5 +1,5 @@
 import { Sale } from '../interface/sales.interface';
-import { getConnection } from '../../../database/config';
+import { getConnection } from '../../../../database/config';
 
 export async function SalesManager(action: string, data?: any) {
   

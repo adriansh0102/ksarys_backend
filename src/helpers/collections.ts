@@ -24,5 +24,6 @@ export const COLLECTIONS = {
   },
   SALES: 'sales',
   MEASURE: 'measure',
-  OFERTAS: 'ofertas'
+  OFERTAS: 'ofertas',
+  CDETALLES: 'cdetalles'
 }

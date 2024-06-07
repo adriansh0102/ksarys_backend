@@ -1,7 +1,7 @@
 import { Router } from "express"
 
 import { SalesControllers } from '../infraestructure/sales.controllers';
-import { checkAuth } from "../../../helpers/checkAuth";
+import { checkAuth } from "../../../../helpers/checkAuth";
 
 const router = Router()
 

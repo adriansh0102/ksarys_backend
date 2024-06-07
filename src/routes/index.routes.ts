@@ -17,10 +17,11 @@ import { CuentasContableRouter } from '../api/cuentas/cuentaContable/router/cuen
 import { ProductsRouter } from '../api/Products/products/router/product.router';
 
 
-import { SalesRouter } from '../api/Sales/router/sales.router';
+import { SalesRouter } from '../api/Sales/comanda/router/sales.router';
 
 import { MeasuresRouter } from '../api/measure/router/measure.router';
 import { OfertasRouter } from '../api/ofertas/router/ofertas.router';
+import { ComandaDRouter } from '../api/Sales/detalles/router/detalles.router';
 
 
 api.use(`/${COLLECTIONS.USERS}`, UsersRouter)
@@ -52,4 +53,5 @@ api.use(`/${COLLECTIONS.PRODUCTS}`, ProductsRouter)
 // api.use(`/${COLLECTIONS.CLASIFICATION}`, ClasificationsRouter)
 api.use(`/${COLLECTIONS.MEASURE}`, MeasuresRouter)
 api.use(`/${COLLECTIONS.OFERTAS}`, OfertasRouter)
+api.use(`/${COLLECTIONS.CDETALLES}`, ComandaDRouter)
 
