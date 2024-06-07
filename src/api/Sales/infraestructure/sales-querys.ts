@@ -14,7 +14,7 @@ export async function SalesManager(action: string, data?: any) {
 
   switch (action) {
     case 'SelectAll':
-      query = 'SELECT * FROM Comanda;';
+      query = 'select c.*, d.Nombre as NombreDependiente from Comanda c, Dependientes d where d.Id = c.IdDependiente;';
       const resultSelect = await pool.request()
         .query(query);
       resultSelect.recordset.forEach(record => {
@@ -26,6 +26,7 @@ export async function SalesManager(action: string, data?: any) {
           Mesa: record.Mesa,
           Personas: record.Personas,
           IdDependiente: record.IdDependiente,
+          NombreDependiente: record.NombreDependiente,
           Observaciones: record.Observaciones.trim(),
           Descuento: record.Descuento,
           Activo: record.Activo,
@@ -37,10 +38,10 @@ export async function SalesManager(action: string, data?: any) {
       });
       break;
 
-    case 'SelectAño':
-      query = 'SELECT * FROM Comanda WHERE Year(Fecha) = Year(@Fecha)';
+    case 'SelectById':
+      query = 'SELECT * FROM Comanda WHERE id = @Id';
       const byId = await pool.request()
-        .input('Id', data!.Fecha)
+        .input('Id', data!.Id)
         .query(query) as { recordset: Sale[] };
       if (byId.recordset[0]) {
         result.push(byId.recordset[0]);
@@ -80,7 +81,7 @@ export async function SalesManager(action: string, data?: any) {
           .input('Descuento', data!.Descuento)
           .input('Activo', 1)
           .input('Validado', 1)
-          .input('Cerrado', data!.Cerrado)
+          .input('Cerrado', 0)
           .input('IdUsuario', data!.IdUsuario)
           .query(query);
         break;

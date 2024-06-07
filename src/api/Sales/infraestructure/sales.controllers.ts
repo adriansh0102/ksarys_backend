@@ -1,6 +1,4 @@
 import { Response, Request } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 import { sendRes } from '../../../helpers/send.res';
 import { Sale } from '../interface/sales.interface';
@@ -9,10 +7,10 @@ import { CustomResponse } from '../../../helpers/checkAuth';
 
 export class SalesControllers {
 
-  static async getAllSales (req: Request, res: Response) {
-
+  static async getAllSales(req: Request, res: Response) {
+    
     try {
-      const sales = await SalesManager('SelectAll')
+      let sales = await SalesManager('SelectAll');
       return sendRes(res, 200, true, 'Datos Obtenidos', sales);
     } catch (error) { 
       if (error instanceof Error) {
@@ -28,13 +26,13 @@ export class SalesControllers {
 
     try {
 
-      const { clientId } = req.params;
-      if (!clientId) return sendRes(res,
+      const { id } = req.params;
+      if (!id) return sendRes(res,
         200,
         false,
         'Faltan datos para realizar esta acción', ''); 
     
-      const sales = await SalesManager('SelectById', {Id: clientId});
+      const sales = await SalesManager('SelectById', {Id: id});
       if (!sales) return sendRes(res, 200, false, 'Usuario no encontrado', ''); 
       
       return sendRes(res, 200, true, 'Resultado de la búsqueda', sales); 
@@ -53,28 +51,14 @@ export class SalesControllers {
    
     try {
 
-      let { Fecha, Mesa,  Personas,  IdDependiente, Descuento }  = req.body;
-      
-      const sale: Sale = {
-        Numero: 6754669,
-        IdAreaEntidad: res.area,
-        Fecha,
-        Mesa,
-        Personas,
-        IdDependiente,
-        Observaciones: 'prueba cosa gorda',
-        Descuento,
-        Activo: true,
-        Validado: true,
-        Cerrado: false,
-        IdUsuario: res.userData?.id,
-        Id: ''
-      }
+      const sale: Sale = req.body;
 
-      console.log(sale);
+      sale.Numero = generateRandomNumber();
+      sale.IdAreaEntidad = res.area;
+      sale.IdUsuario = res.userData?.id
 
       await SalesManager('Insert', sale);
-      return sendRes(res, 200, true, 'Comanda Creado Exitosamente', '');
+      return sendRes(res, 200, true, 'Comanda Creada Exitosamente', '');
       
     } catch (error) {
       console.log(error);
@@ -106,4 +90,14 @@ export class SalesControllers {
 
   }
 
+}
+
+function generateRandomNumber(): number {
+    // Genera un número aleatorio entre 10000 y 99999
+    const randomNumber = Math.floor(Math.random() * 90000) + 10000;
+
+    // Formatea el número para asegurar que comienza con '6754'
+    const formattedNumber = `675${randomNumber}`;
+
+    return parseInt(formattedNumber, 10);
 }

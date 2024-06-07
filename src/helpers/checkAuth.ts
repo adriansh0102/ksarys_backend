@@ -16,7 +16,7 @@ export async function checkAuth(req: Request, res: CustomResponse, next: NextFun
     res.area = decoded.area;
     return next();
   } catch (error) {
-    return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
+    return sendRes(res, 500, false, 'Problema con el token de acceso', error);
   }
 }
 
