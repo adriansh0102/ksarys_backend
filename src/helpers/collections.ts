@@ -23,5 +23,6 @@ export const COLLECTIONS = {
     productPrice: 'product/price',
   },
   SALES: 'sales',
-  MEASURE: 'measure'
+  MEASURE: 'measure',
+  OFERTAS: 'ofertas'
 }
