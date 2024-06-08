@@ -60,9 +60,6 @@ export class ProductsControllers {
 
     let { Id } = req.params;
 
-    console.log('aaaaaaaaaaaaaaaaaaaaa');
-    
-    
     try {
       const product = await Products('SelectOneId', { Id });
       return sendRes(res, 200, true, "Producto Obtenido", product);

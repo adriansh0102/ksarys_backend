@@ -7,6 +7,4 @@ router
 
   .get('/', OfertasControllers.getAllOfertas)
   
-
- 
 export const OfertasRouter = router

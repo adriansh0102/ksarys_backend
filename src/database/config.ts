@@ -19,7 +19,6 @@ export async function getConnection(): Promise<ConnectionPool> {
     const pool = await sql.connect(dbSettings);
     return pool;
   } catch (error) {
-    console.log(error);
     throw new Error('Error connecting to the database');
   }
 }

@@ -122,14 +122,11 @@ export class UsersControllers {
       const { id } = req.params;
       if (!id) return sendRes(res, 200, false, 'Faltan datos para realizar esta acción', ''); 
       
-      console.log(id);
-    
       await UsersManager('Delete', {ID: id});
       return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
 
     } catch (error) { 
       if (error instanceof Error) {
-        console.log(error);
         return sendRes(res, 500, false, 'Error Interno', error.message); 
       } else {
         return sendRes(res, 500, false, 'Error Interno', '');

@@ -10,7 +10,23 @@ export class ComandaDControllers {
   static async getAllCDetalles(req: Request, res: Response) {
     
     try {
-      let sales = await ComandaDetallesQuerys('getAll', {IdComanda: req.params.id});
+      const sales = await ComandaDetallesQuerys('getAll', {IdComanda: req.params.id});
+      return sendRes(res, 200, true, 'Datos Obtenidos', sales);
+    } catch (error) { 
+      if (error instanceof Error) {
+        return sendRes(res, 500, false, 'Error Grave', error.message); 
+      } else {
+        return sendRes(res, 500, false, 'Error Grave', '');
+      }
+    }
+
+  }
+
+  static async getComandaDetalleByComanda(req: Request, res: Response) {
+    
+    try {
+      const sales = await ComandaDetallesQuerys('getComandaDetalleByComanda',
+        { IdComanda: req.params.id });
       return sendRes(res, 200, true, 'Datos Obtenidos', sales);
     } catch (error) { 
       if (error instanceof Error) {
@@ -69,14 +85,11 @@ export class ComandaDControllers {
       const { id } = req.params;
       if (!id) return sendRes(res, 200, false, 'Faltan datos para realizar esta acción', ''); 
       
-      console.log(id);
-    
-      await ComandaDetallesQuerys('Delete', {Id: id});
+      await ComandaDetallesQuerys('Eliminar', {Id: id});
       return sendRes(res, 200, true, 'Usuario Eliminado Correctamente', '');
 
     } catch (error) { 
       if (error instanceof Error) {
-        console.log(error);
         return sendRes(res, 500, false, 'Error Interno', error.message); 
       } else {
         return sendRes(res, 500, false, 'Error Interno', '');

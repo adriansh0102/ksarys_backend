@@ -115,7 +115,7 @@ export async function SalesManager(action: string, data?: any) {
       break;
 
     case 'Eliminar':
-      query = 'DELETE FROM Comanda WHERE Id = @Id AND Activo = 0';
+      query = 'DELETE FROM Comanda WHERE Id = @Id;';
       await pool.request()
         .input('Id', data!.Id)
         .query(query)

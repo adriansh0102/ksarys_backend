@@ -1,13 +1,13 @@
 
 import { Response, Request } from "express";
-import { Ofertas } from "./ofertas-query";
+import { OfertasManager } from "./ofertas-query";
 import { sendRes } from "../../../helpers/send.res";
 
 export class OfertasControllers {
 
   static async getAllOfertas(req: Request, res: Response) {
     try {
-      const utensilios = await Ofertas("SelectAll");
+      const utensilios = await OfertasManager("SelectAll");
       return sendRes(res, 200, true, "Datos Obtenidos", utensilios);
     } catch (error) {
       if (error instanceof Error) {

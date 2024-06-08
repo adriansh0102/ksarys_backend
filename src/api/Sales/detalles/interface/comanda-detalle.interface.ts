@@ -6,4 +6,6 @@ export interface ComandaDetalles {
   Importe?: number;
   ImporteDescuento?: number;
   IdUsuario?: string;
+  Nombre?: string;
+  Precio?: string;
 }

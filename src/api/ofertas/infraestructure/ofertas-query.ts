@@ -1,7 +1,7 @@
 import { ConnectionPool } from "mssql";
 import { getConnection } from "../../../database/config";
 
-export async function Ofertas(Accion: string, Datos?: any) {
+export async function OfertasManager(Accion: string, Datos?: any) {
   const pool: ConnectionPool = await getConnection();
   if (!pool) {
     throw new Error("Failed to establish a database connection.");
@@ -26,7 +26,7 @@ export async function Ofertas(Accion: string, Datos?: any) {
     break;
 
     case "SelectAll":
-      query = `select ofe.id, ofe.Nombre, op.Precio from Ofertas ofe, OfertasPrecios op where op.IdOferta = ofe.Id;`;
+      query = `select ofe.Id, ofe.Nombre, op.Precio from Ofertas ofe, OfertasPrecios op where op.IdOferta = ofe.Id;`;
       result = await pool.request()
       .query(query);
 
@@ -112,10 +112,8 @@ export async function Ofertas(Accion: string, Datos?: any) {
       break;
 
     case "Eliminar":
-      query = `Delete From Ofertas
-        Where Id = @Id And Activo = 0`;
-      result = await pool
-        .request()
+      query = `Delete From Ofertas Where Id = @Id;`;
+      result = await pool.request()
         .input("Id", Datos.Id)
         .query(query);
       break;

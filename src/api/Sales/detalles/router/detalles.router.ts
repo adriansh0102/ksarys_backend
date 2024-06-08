@@ -9,6 +9,7 @@ router
 
   .get('/', checkAuth, ComandaDControllers.getAllCDetalles)
   .get('/:id', checkAuth, ComandaDControllers.getCDetallesById)
+  .get('/cdetalle/:id', checkAuth, ComandaDControllers.getComandaDetalleByComanda)
 
   .post('/', checkAuth, ComandaDControllers.saveCDetalle)
 

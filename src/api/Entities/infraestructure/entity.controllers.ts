@@ -83,7 +83,6 @@ export class EntityControllers {
       return sendRes(res, 200, true, 'Entidad Creada Exitosamente', '');
       
     } catch (error) {
-      console.log(error);
       return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
     }
 
@@ -95,13 +94,10 @@ export class EntityControllers {
 
       const data: Entity = req.body;
 
-      console.log(data);
-
       await EntitiesManager('Update', data);
       return sendRes(res, 200, true, 'Entidad Editada Exitosamente', '');
       
     } catch (error) {
-      console.log(error);
       return sendRes(res, 500, false, 'Ha ocurrido algo grave', error);
     }
 
@@ -118,7 +114,6 @@ export class EntityControllers {
       return sendRes(res, 200, true, 'Entidad Eliminada Correctamente', '');
     } catch (error) { 
       if (error instanceof Error) {
-        console.log(error.message);
         return sendRes(res, 500, false, 'Error Interno', ''); 
       } else {
         return sendRes(res, 500, false, 'Error Interno', '');

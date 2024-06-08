@@ -61,7 +61,6 @@ export async function Utensilios(action: string, Datos?: Utensilio) {
       query = `Update Utensilios
       Set Nombre = @Nombre, IdTipo = @IdTipo, Precio = @Precio, Cantidad = @Cantidad,  Activo = 1, Validado = @Validado
     Where Id = @Id`;
-    console.log(Datos!.IdTipo);
       result = await pool
         .request()
         .input("Id", Datos!.Id)

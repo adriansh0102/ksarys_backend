@@ -87,7 +87,6 @@ export class CuentasContablesControllers {
       return sendRes(res, 200, true, "Borrar ok", tipo);
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error);
         return sendRes(res, 500, false, "Error Grave", error.message);
       } else {
         return sendRes(res, 500, false, "Error Grave", "");

@@ -32,6 +32,31 @@ export const ComandaDetallesQuerys = async (accion: string, datos?: ComandaDetal
         result.push(dat);
       });
       break;
+    
+    case 'getComandaDetalleByComanda':
+      query = `select cd.*, o.Nombre, op.Precio
+        from ComandaDetalles cd, Ofertas o, OfertasPrecios op
+        where cd.IdComanda = @IdComanda and o.Id = cd.IdOferta and op.IdOferta = cd.IdOferta;`;
+      
+      const resp = await pool.request()
+        .input('IdComanda', datos!.IdComanda)
+        .query(query);
+
+      resp.recordset.forEach(record => {
+        const dat: ComandaDetalles = {
+          Id: record.Id,
+          IdComanda: record.IdComanda,
+          IdOferta: record.IdOferta,
+          Cantidad: record.Cantidad,
+          Importe: record.Importe,
+          ImporteDescuento: record.ImporteDescuento,
+          IdUsuario: record.IdUsuario,
+          Nombre: record.Nombre,
+          Precio: record.Precio
+        };
+        result.push(dat);
+      });
+      break;
 
     case 'Select':
       query = `
@@ -98,13 +123,10 @@ export const ComandaDetallesQuerys = async (accion: string, datos?: ComandaDetal
       break;
 
     case 'Eliminar':
-      query = `
-        DELETE FROM ComandaDetalles WHERE IdComanda = @IdComanda AND IdOferta = @IdOferta
-      `;
+      query = 'DELETE FROM ComandaDetalles WHERE Id = @Id';
 
       await pool.request()
-        .input('IdComanda', datos!.IdComanda)
-        .input('IdOferta', datos!.IdOferta)
+        .input('Id', datos!.Id)
         .query(query);
 
       break;
